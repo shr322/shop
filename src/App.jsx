@@ -12,7 +12,9 @@ import data1 from './data';
 import {a,b} from './import_export_test';
 /* import export할때 여러개 불러오는 경우에는 변수명을 js파일과 동일하게 해야한다. */
 import {Routes, Route, Link} from 'react-router-dom';
-import Test from './컴포넌트'
+
+/* 컴포넌트 */
+import Detail from './pages/Detail';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -48,7 +50,7 @@ function App() {
               </div>
             </>
           }/>
-          <Route path="/detail" element={<Test/>}/>
+          <Route path="/detail" element={<Detail/>}/>
           <Route path="/about" element={<div>어바웃페이지</div>}/>
         </Routes>
 

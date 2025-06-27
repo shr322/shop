@@ -1,4 +1,4 @@
-function Test(){
+function Detail(){
   return (
     <div className="container">
       <div className="row">
@@ -15,4 +15,4 @@ function Test(){
     </div> 
   )
 }
-export default Test;
+export default Detail;
