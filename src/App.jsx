@@ -44,11 +44,15 @@ function App() {
                 <div className="row">
                   {shoes.map((item,i)=>{
                     return (
-                      <Card key={i} shoes={shoes[i]} i={i}></Card>
+                      <Card key={i} shoes={shoes[i]} i={i} navigate={navigate}></Card>
                     )
                   })}
                 </div>
               </div>
+
+              <button onClick={()=>{
+                console.log(shoes)
+              }}>정 렬</button>
             </>
           }/>
 
@@ -94,15 +98,12 @@ function About(props){
 }
 
 function Card(props){
-  const shoes = props.shoes;
-  const i = props.i
-  
   return (
     <>
-      <div className="col-md-4">
-        <img src={`/shoes${i+1}.jpg`} width="80%" />
-        <h4>{shoes.title}</h4>
-        <p>{shoes.content}</p>
+      <div className="col-md-4" onClick={()=>{props.navigate(`/detail/${props.i}`)}}>
+        <img src={`/shoes${props.i+1}.jpg`} width="80%" />
+        <h4>{props.shoes.title}</h4>
+        <p>{props.shoes.content}</p>
       </div>
     </>
   )
