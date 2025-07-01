@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Navbar, Container, Nav} from 'react-bootstrap';
 import data from './data';
 import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
-import Detail from './pages/Detail';
+import Detail from './pages/Detail_내가해봄.jsx';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -36,18 +36,30 @@ function App() {
         
         <Routes>
           <Route path="/" element={
-            <div className="container">
-              <div className="row">
-                {shoes.map((item, i)=>{
-                  return (
-                    <Card item={item} i={i}/>
-                  )
-                })}
+            <>
+              <div className="main-bg"></div>
+              <div className="container">
+                <div className="row">
+                  {shoes.map((item, i)=>{
+                    return (
+                      <Card navigate={navigate} item={item} i={i}/>
+                    )
+                  })}
+                </div>
               </div>
-            </div>
+
+              <button onClick={()=>{
+                const copy = JSON.parse(JSON.stringify(shoes)).sort((a,b)=>{
+                  if(a.title > b.title) return 1;
+                  if(a.title < b.title) return -1;
+                })
+                setShoes(copy)
+              }}>정렬</button>
+            </>
           }/>
 
-          <Route path="/detail" element={<Detail/>}/>
+          <Route path="/detail/:id" element={<Detail shoes={shoes}/>}/>
+          
           <Route path="/about" element={<About/>}>
             <Route path="member" element={<div>멤버</div>}/>
             <Route path="location" element={<div>지역</div>}/>
@@ -85,8 +97,9 @@ function About(){
 }
 
 function Card(props){
+  console.log(props)
   return (
-    <div className="col-md-4">
+    <div className="col-md-4" onClick={()=>{props.navigate(`/detail/${props.item.id}`)}}>
       <img src={`/shoes${props.item.id + 1}.jpg`} width="80%" />
       <h4>{props.item.title}</h4>
       <p>{props.item.content}</p>

@@ -51,7 +51,11 @@ function App() {
               </div>
 
               <button onClick={()=>{
-                console.log(shoes)
+                const copy = JSON.parse(JSON.stringify(shoes)).sort((a,b)=>{
+                  if(a.title > b.title) return 1;
+                  if(a.title < b.title) return -1;
+                })
+                setShoes(copy)
               }}>정 렬</button>
             </>
           }/>
@@ -100,8 +104,8 @@ function About(props){
 function Card(props){
   return (
     <>
-      <div className="col-md-4" onClick={()=>{props.navigate(`/detail/${props.i}`)}}>
-        <img src={`/shoes${props.i+1}.jpg`} width="80%" />
+      <div className="col-md-4" onClick={()=>{props.navigate(`/detail/${props.shoes.id}`)}}>
+        <img src={`/shoes${props.shoes.id+1}.jpg`} width="80%" />
         <h4>{props.shoes.title}</h4>
         <p>{props.shoes.content}</p>
       </div>
