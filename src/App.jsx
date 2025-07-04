@@ -12,14 +12,16 @@ import styleBg from './bg.png';
 import data from './data';
 import {a,b} from './import_export_test';
 /* import export할때 여러개 불러오는 경우에는 변수명을 js파일과 동일하게 해야한다. */
+import axios from 'axios'
 
 /* 컴포넌트 */
 import Detail from './pages/Detail';
 
 function App() {
+  const navigate = useNavigate();
   const [count, setCount] = useState(0);
   const [shoes, setShoes] = useState(data);
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   return (
     <>
       <div className="App">
@@ -39,7 +41,10 @@ function App() {
         <Routes>
           <Route path="/" element={
             <>
+              {loading === true ? <div className="loading">로딩중</div> : null}
+              
               <div className="main-bg"></div>
+              {count}
               <div className="container">
                 <div className="row">
                   {shoes.map((item,i)=>{
@@ -57,6 +62,80 @@ function App() {
                 })
                 setShoes(copy)
               }}>정 렬</button>
+              <button onClick={()=>{
+
+                /* 리팩토링된 버전*/
+                async function fetchData(url){
+                  try {
+                    setLoading(true)
+                    const result = await axios.get(url)
+                    setShoes((prev)=>{ return [...prev, ...result.data]});
+                    setCount((prev)=>{ return prev + 1})
+                    setLoading(false)
+                  } catch(err){
+                    console.log(err);
+                  }
+                }
+
+                if(count === 0 ){
+                  // 리팩토링 아닌 버전
+                  // setLoading(true)
+                  // axios.get('https://codingapple1.github.io/shop/data2.json')
+                  // .then((result)=>{
+                  //   const copy = JSON.parse(JSON.stringify(shoes));
+                  //   copy.push(...result.data)
+                    
+                  //   /* 배열 + 배열할때 사용하는 방법 */
+                  //   // const copy = [...shoes, ...result.data]
+                  //   // const copy = JSON.parse(JSON.stringify(shoes)).concat(result.data);
+
+                  //   setShoes(copy)
+                  //   setCount(count+1)
+                  //   setLoading(false)
+                  // })
+                  // .catch((err)=>{
+                  //   console.log(err)
+                  //   setCount(count+1)
+                  //   setLoading(false)
+                  // })
+
+                  // 리팩토링 버전
+                  fetchData('https://codingapple1.github.io/shop/data2.json');
+                } else if(count === 1) {
+                  // 리팩토링 아닌 버전
+                  // setLoading(true)
+                  // axios.get('https://codingapple1.github.io/shop/data3.json')
+                  // .then((result)=>{
+                  //   const copy = JSON.parse(JSON.stringify(shoes));
+                  //   copy.push(...result.data)
+                    
+                  //   setShoes(copy)
+                  //   setCount(count+1)
+                  //   setLoading(false)
+                  // })
+                  // .catch((err)=>{
+                  //   console.log(err)
+                  //   setCount(count+1)
+                  //   setLoading(false)
+                  // })
+
+                  // 리팩토링 버전
+                  fetchData('https://codingapple1.github.io/shop/data3.json');
+                } else {
+                  setLoading(false);
+                  alert('상품이 없어요');
+                }
+
+
+                /* 서버로 데이터 전송하는 법 */
+                // axios.post('데이터 받는 주소', {name: 'sim'});
+
+                /* 동시에 여러개 요청하는 법*/
+                // Promise.all([ axios.get('경로1'), axios.get('경로2') ]).then(()=>{})
+
+                /* fetch 사용법 */ 
+                // fetch('경로').then((response)=>{return response.json()}).then((data)=>{return data})
+              }}>더 보 기</button>
             </>
           }/>
 
@@ -105,7 +184,7 @@ function Card(props){
   return (
     <>
       <div className="col-md-4" onClick={()=>{props.navigate(`/detail/${props.shoes.id}`)}}>
-        <img src={`/shoes${props.shoes.id+1}.jpg`} width="80%" />
+        <img src={`https://codingapple1.github.io/shop/shoes${props.shoes.id+1}.jpg`} width="80%" />
         <h4>{props.shoes.title}</h4>
         <p>{props.shoes.content}</p>
       </div>

@@ -1,28 +1,21 @@
 import { useParams } from "react-router-dom";
 
 function Detail(props){
-  const {id} = useParams();
-
-  const 찾은상품 = props.shoes.find((a,b)=>{
-    return a.id == id;
-  })
-
-  console.log(찾은상품)
-
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-md-6">
-          <img src={`https://codingapple1.github.io/shop/shoes${parseInt(찾은상품.id) + 1}.jpg`} width="100%" />
+    <div class="card mb-3" >
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img src="..." class="img-fluid rounded-start"/>
         </div>
-        <div className="col-md-6">
-          <h4 className="pt-5">{찾은상품.title}</h4>
-          <p>{찾은상품.content}</p>
-          <p>{찾은상품.price}원</p>
-          <button className="btn btn-danger">주문하기</button> 
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+          </div>
         </div>
       </div>
-    </div> 
+    </div>
   )
 }
 export default Detail;

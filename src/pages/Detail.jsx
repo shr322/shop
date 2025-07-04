@@ -30,7 +30,7 @@ function Detail(props){
   let [count, setCount] = useState(0);
   const {id} = useParams();
   let 찾는상품 = props.shoes.find((a,b)=>{ return a.id == id })
-  const [alert, setAlert] = useState(true)
+  const [alertState, setAlertState] = useState(true)
   const [inp, setinp] = useState('');
 
   /**
@@ -54,7 +54,7 @@ function Detail(props){
    * */
   useEffect(()=>{
     let a = setTimeout(() => {
-      setAlert(false)
+      setAlertState(false)
     }, 2000);
     
     return()=>{
@@ -64,7 +64,7 @@ function Detail(props){
 
   useEffect(()=>{
     if(isNaN(inp)){
-      console.log('숫자가 아닙니다')
+      alert('숫자가 아닙니다')
     }
   },[inp])
 
@@ -75,7 +75,7 @@ function Detail(props){
         setCount(count+1);
       }}>버튼</button>
 
-      { alert ? <div className="alert alert-warning">2초이내 구매시 할인</div> : null}
+      { alertState ? <div className="alert alert-warning">2초이내 구매시 할인</div> : null}
 
 
       <div className="row">
