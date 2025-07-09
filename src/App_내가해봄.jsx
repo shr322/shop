@@ -32,12 +32,12 @@ function App() {
           </Container>
         </Navbar>
 
-        <div className="main-bg"></div>
 
         <Routes>
           {/* 메인 */}
           <Route path="/" element={
             <>
+              <div className="main-bg"></div>
               <div>메인입니다.</div>
             </>
           }/>

@@ -34,6 +34,8 @@ function Detail(props){
   const [inp, setinp] = useState('');
   const [tab, setTab] = useState(0);
 
+  const [fade, setFade] = useState('');
+
   /**
    * useEffect는
    * mount,update시 실행됨
@@ -68,9 +70,13 @@ function Detail(props){
       alert('숫자가 아닙니다')
     }
   },[inp])
+
+  useEffect(()=>{
+    setFade('open')
+  }, [])
   
   return (
-    <div className="container">
+    <div className={`container detail ${fade}`}>
       {count}<button onClick={()=>{
         setCount(count+1);
       }}>버튼</button>
@@ -118,14 +124,40 @@ function Detail(props){
 }
 
 function TabContent({tab}){
+
+  const [fade, setFade] = useState('');
+
+  /**
+   * useEffect에서 setTimeout사용하는 이유는
+   * 리액트 18버전 이상부터는 Automatic Batching라는 기능이 추가됨.
+   * 해당 기능은 state 변경함수들이 연달아서 여러개 처리되어야 한다면
+   * state 변경함수를 다 처리하고 마지막에 한 번만 재렌더링된다. 
+  */
+  useEffect(()=>{
+    const timer = setTimeout(() => {
+      setFade('end')
+    }, 10);
+
+    return ()=>{
+      clearTimeout(timer);
+      setFade('')
+    }
+  }, [tab])
+
   // if(tab == 0){ return <div>1</div> }
   // if(tab == 1){ return <div>2</div> }
   // if(tab == 2){ return <div>3</div> }
-  return [
-    <div>1</div>,
-    <div>2</div>,
-    <div>3</div>
-  ][tab]
+  return (
+    <div className={`start ${fade}`}>
+      {
+        [
+          <div>1</div>,
+          <div>2</div>,
+          <div>3</div>
+        ][tab]
+      }
+    </div>
+  )
 }
 
 

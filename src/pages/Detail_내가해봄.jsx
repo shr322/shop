@@ -11,6 +11,9 @@ function Detail(props){
     return a.id == id;
   })
 
+  const [fade2, setFade2] = useState('');
+
+
 
   useEffect(()=>{
     let a = setTimeout(() => {
@@ -22,10 +25,22 @@ function Detail(props){
     }
   }, [])
 
+
+  useEffect(()=>{
+    const a = setTimeout(()=>{
+      setFade2('end')
+    }, 10)
+
+    return ()=>{
+      setFade2('');
+      clearTimeout(a);
+    }
+  }, [])
+
   return (
     <>
-      {alertOnOff ? <div className="alert alert-warning">5초이내 구매시 할인</div> : null}
-      <div className="card mb-3" >
+      <div className={"card mb-3 start " + fade2} >
+        {alertOnOff ? <div className="alert alert-warning">5초이내 구매시 할인</div> : null}
         <div className="row g-0">
           <div className="col-md-4">
             <img src={`https://codingapple1.github.io/shop/shoes${parseInt(findProduct.id) + 1}.jpg`} className="img-fluid rounded-start"/>
@@ -60,11 +75,28 @@ function Detail(props){
 }
 
 function TabContent({tab}){
-  return [
-    <div>1</div>,
-    <div>2</div>,
-    <div>3</div>
-  ][tab]
+  const [fade, setFade] = useState('');
+
+  useEffect(()=>{
+    const a = setTimeout(()=>{
+      setFade('end')
+    }, 10)
+
+    return ()=>{
+      setFade('');
+      clearTimeout(a);
+    }
+  }, [tab])
+
+  return (
+    <div className={`start ${fade}`}>
+      {[
+        <div>1</div>,
+        <div>2</div>,
+        <div>3</div>
+      ][tab]}
+    </div>
+  )
 }
 
 
