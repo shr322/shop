@@ -1,10 +1,12 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Nav } from "react-bootstrap";
 
 function Detail(props){
   const {id} = useParams();
   const [alertOnOff, setAlertOnOff] = useState(true)
-
+  const [tab, setTab] = useState(0);
+  const tabs = ['1','2','3'];
   const findProduct = props.shoes.find((a)=>{
     return a.id == id;
   })
@@ -37,7 +39,33 @@ function Detail(props){
           </div>
         </div>
       </div>
+
+      <Nav variant="tabs"  defaultActiveKey="link0">
+        {tabs.map((item,i)=>{
+          return (
+            <>
+              <Nav.Item>
+                <Nav.Link eventKey={`link${i}`} onClick={()=>{
+                  setTab(i)
+                }}>버튼{i}</Nav.Link>
+              </Nav.Item>
+            </>
+          )
+        })}
+      </Nav>
+
+      <TabContent tab={tab}/>
     </>
   )
 }
+
+function TabContent({tab}){
+  return [
+    <div>1</div>,
+    <div>2</div>,
+    <div>3</div>
+  ][tab]
+}
+
+
 export default Detail;
