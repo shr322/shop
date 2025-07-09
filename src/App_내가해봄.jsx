@@ -16,6 +16,9 @@ function App() {
 
   const [loadOfOff, setLoadOfOff] = useState(true)
 
+  const [count, setCount] = useState(0);
+
+
   return (
     <>
       <div className="App">
@@ -43,7 +46,7 @@ function App() {
           {/* 상세페이지 목록 */}
           <Route path="/detail" element={
             <>
-              <DetailList loadOfOff={loadOfOff} setLoadOfOff={setLoadOfOff} navigate={navigate} shoes={shoes} setShoes={setShoes}/>
+              <DetailList loadOfOff={loadOfOff} setLoadOfOff={setLoadOfOff} navigate={navigate} shoes={shoes} setShoes={setShoes} count={count} setCount={setCount}/>
               {loadOfOff ? <div className="loading">로딩중</div> : null}
             </>
           }>
@@ -86,7 +89,6 @@ function CardComponent(props){
 }
 
 function DetailList(props){
-  const [count, setCount] = useState(0);
   
   useEffect(()=>{
     props.setLoadOfOff(false)  
@@ -111,7 +113,7 @@ function DetailList(props){
             const data = await result.json();
             const copy = [...props.shoes, ...data];
             props.setShoes(copy)
-            setCount(count + 1);
+            props.setCount((prev)=> prev+1);
           } catch(err){
             console.log(err)
           } finally {
@@ -120,12 +122,12 @@ function DetailList(props){
           }
         }
 
-        if(count === 0){
+        if(props.count === 0){
           fetchData('https://codingapple1.github.io/shop/data2.json')
-          console.log(count)
-        } else if(count === 1) {
+          console.log(props.count)
+        } else if(props.count === 1) {
           fetchData('https://codingapple1.github.io/shop/data3.json')
-          console.log(count)
+          console.log(props.count)
         } else {
           props.setLoadOfOff(false)
           alert('불러올 상품이 없음')
