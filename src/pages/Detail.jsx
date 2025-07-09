@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
+import { Nav } from 'react-bootstrap';
 
 /* Lifecycle hook 예전 방식 */
 // class Detail2 extends React.Component {
@@ -32,6 +32,7 @@ function Detail(props){
   let 찾는상품 = props.shoes.find((a,b)=>{ return a.id == id })
   const [alertState, setAlertState] = useState(true)
   const [inp, setinp] = useState('');
+  const [tab, setTab] = useState(0);
 
   /**
    * useEffect는
@@ -67,7 +68,6 @@ function Detail(props){
       alert('숫자가 아닙니다')
     }
   },[inp])
-
   
   return (
     <div className="container">
@@ -82,17 +82,51 @@ function Detail(props){
         <div className="col-md-6">
           <img src={`https://codingapple1.github.io/shop/shoes${parseInt(찾는상품.id) + 1}.jpg`} width="100%" />
         </div>
-        <input type="text" onChange={(e)=>{
-          setinp(e.target.value)
-        }}/>
+        
         <div className="col-md-6">
+          <input type="text" onChange={(e)=>{
+            setinp(e.target.value)
+          }}/>
           <h4 className="pt-5">{찾는상품.title}</h4>
           <p>{찾는상품.content}</p>
           <p>{찾는상품.price}원</p>
           <button className="btn btn-danger">주문하기</button> 
         </div>
       </div>
+
+
+      <Nav variant="tabs"  defaultActiveKey="link0">
+          <Nav.Item>
+            <Nav.Link eventKey="link0" onClick={()=>{
+              setTab(0)
+            }}>버튼0</Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link eventKey="link1" onClick={()=>{
+              setTab(1)
+            }}>버튼1</Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link eventKey="link2" onClick={()=>{
+              setTab(2)
+            }}>버튼2</Nav.Link>
+          </Nav.Item>
+      </Nav>
+      <TabContent tab={tab} setTab={setTab}/>
     </div> 
   )
 }
+
+function TabContent({tab}){
+  // if(tab == 0){ return <div>1</div> }
+  // if(tab == 1){ return <div>2</div> }
+  // if(tab == 2){ return <div>3</div> }
+  return [
+    <div>1</div>,
+    <div>2</div>,
+    <div>3</div>
+  ][tab]
+}
+
+
 export default Detail;
