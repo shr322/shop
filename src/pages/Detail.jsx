@@ -36,6 +36,7 @@ function Detail(props){
 
   const [fade, setFade] = useState('');
 
+
   /**
    * useEffect는
    * mount,update시 실행됨
@@ -118,12 +119,12 @@ function Detail(props){
             }}>버튼2</Nav.Link>
           </Nav.Item>
       </Nav>
-      <TabContent tab={tab} setTab={setTab}/>
+      <TabContent tab={tab} shoes={props.shoes}/>
     </div> 
   )
 }
 
-function TabContent({tab}){
+function TabContent({tab,shoes}){
 
   const [fade, setFade] = useState('');
 
@@ -151,9 +152,9 @@ function TabContent({tab}){
     <div className={`start ${fade}`}>
       {
         [
-          <div>1</div>,
-          <div>2</div>,
-          <div>3</div>
+          <div>{shoes[0].title}</div>,
+          <div>{shoes[1].title}</div>,
+          <div>{shoes[2].title}</div>
         ][tab]
       }
     </div>
