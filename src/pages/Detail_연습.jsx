@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { Nav } from "react-bootstrap";
+import { useEffect, useState } from "react";
 
 function Detail(props){
   const {paramId} = useParams();
@@ -8,7 +9,8 @@ function Detail(props){
     return a.id == paramId
   })
 
-  
+  const [tabIndex, setTabIndex] = useState(0);
+  const [fade, setFade] = useState('end')
   return (
     <>
       <div className="card mb-3">
@@ -28,30 +30,47 @@ function Detail(props){
       </div>
 
       <Nav variant="tabs"  defaultActiveKey="link0">
-          <Nav.Item>
-            <Nav.Link eventKey="link0" onClick={()=>{
-            }}>버튼0</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="link1" onClick={()=>{
-            }}>버튼1</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="link2" onClick={()=>{
-            }}>버튼2</Nav.Link>
-          </Nav.Item>
+        {props.shoes.map((item,i)=>{
+          return (
+            <Nav.Item>
+              <Nav.Link eventKey={`link${i}`} onClick={()=>{
+                setTabIndex(i);
+              }}>버튼{i}</Nav.Link>
+            </Nav.Item>
+          )
+        })}
       </Nav>
 
-      <TabContent />
+      <TabContent fade={fade} setFade={setFade} tabIndex={tabIndex} shoes={props.shoes}/>
     </>
   )
 }
 
 
-function TabContent(){
+function TabContent(props){
+  
+  useEffect(()=>{
+    let a = setTimeout(() => {
+      props.setFade('end')
+    }, 50);
+
+    return ()=>{
+      clearTimeout(a);
+      props.setFade('')
+    }
+  }, [props.tabIndex])
+
   return (
     <>
-      <div>1</div>
+      <div className={`start ${props.fade}`}>
+        {
+          [
+            <div>{props.shoes[props.tabIndex].title}</div>
+            ,<div>{props.shoes[props.tabIndex].title}</div>
+            ,<div>{props.shoes[props.tabIndex].title}</div>
+          ][props.tabIndex]
+        }
+      </div>
     </>
   )
 }

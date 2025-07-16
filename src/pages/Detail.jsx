@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Nav } from 'react-bootstrap';
+import user from "../store/userSlice";
+import { useDispatch } from "react-redux";
+import { addItem } from "../store";
 
 /* Lifecycle hook 예전 방식 */
 // class Detail2 extends React.Component {
@@ -36,6 +39,8 @@ function Detail(props){
 
   const [fade, setFade] = useState('');
 
+
+  const dispatch = useDispatch();
 
   /**
    * useEffect는
@@ -97,7 +102,9 @@ function Detail(props){
           <h4 className="pt-5">{찾는상품.title}</h4>
           <p>{찾는상품.content}</p>
           <p>{찾는상품.price}원</p>
-          <button className="btn btn-danger">주문하기</button> 
+          <button className="btn btn-danger" onClick={()=>{
+            dispatch(addItem(찾는상품))
+          }}>주문하기</button> 
         </div>
       </div>
 

@@ -16,6 +16,7 @@ import axios from 'axios'
 
 /* 컴포넌트 */
 import Detail from './pages/Detail';
+import Cart from './pages/Cart'
 
 function App() {
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ function App() {
               <Nav.Link onClick={()=>{navigate('/detail')}}>상세페이지</Nav.Link>
               <Nav.Link onClick={()=>{navigate('/about')}}>about</Nav.Link>
               <Nav.Link onClick={()=>{navigate('/event')}}>이벤트</Nav.Link>
+              <Nav.Link onClick={()=>{navigate('/cart')}}>카트</Nav.Link>
             </Nav>
           </Container>
         </Navbar>
@@ -150,6 +152,8 @@ function App() {
             <Route path="one" element={<div>첫 주문시 양배추즙 서비스</div>}></Route>
             <Route path="two" element={<div>생일기념 쿠폰받기</div>}></Route>
           </Route>
+
+          <Route path="/cart" element={<Cart/>}></Route>
         </Routes>
 
 
