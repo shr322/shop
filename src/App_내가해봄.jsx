@@ -124,10 +124,8 @@ function DetailList(props){
 
         if(props.count === 0){
           fetchData('https://codingapple1.github.io/shop/data2.json')
-          console.log(props.count)
         } else if(props.count === 1) {
           fetchData('https://codingapple1.github.io/shop/data3.json')
-          console.log(props.count)
         } else {
           props.setLoadOfOff(false)
           alert('불러올 상품이 없음')

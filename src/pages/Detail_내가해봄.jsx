@@ -69,12 +69,12 @@ function Detail(props){
         })}
       </Nav>
 
-      <TabContent tab={tab}/>
+      <TabContent shoes={props.shoes} tab={tab}/>
     </>
   )
 }
 
-function TabContent({tab}){
+function TabContent({tab,shoes}){
   const [fade, setFade] = useState('');
 
   useEffect(()=>{
@@ -91,9 +91,9 @@ function TabContent({tab}){
   return (
     <div className={`start ${fade}`}>
       {[
-        <div>1</div>,
-        <div>2</div>,
-        <div>3</div>
+        <div>{shoes[tab].title}</div>,
+        <div>{shoes[tab].title}</div>,
+        <div>{shoes[tab].title}</div>
       ][tab]}
     </div>
   )
