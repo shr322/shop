@@ -1,6 +1,9 @@
-import { useParams } from "react-router-dom";
-import { Nav } from "react-bootstrap";
+import { useNavigate, useParams } from "react-router-dom";
+import { Nav, Button } from "react-bootstrap";
 import { useEffect, useState } from "react";
+
+import { useDispatch } from "react-redux";
+import { addItem } from "../store_연습";
 
 function Detail(props){
   const {paramId} = useParams();
@@ -9,8 +12,13 @@ function Detail(props){
     return a.id == paramId
   })
 
+  const navigate = useNavigate();
+
   const [tabIndex, setTabIndex] = useState(0);
   const [fade, setFade] = useState('end')
+
+  let dispatch = useDispatch();
+
   return (
     <>
       <div className="card mb-3">
@@ -24,6 +32,9 @@ function Detail(props){
               <p className="card-text">{currentProduct.content}</p>
               <p className="card-text"></p>
               <p className="card-text"><small className="text-body-secondary">{currentProduct.price}</small></p>
+              <Button variant="primary" onClick={()=>{
+                dispatch(addItem(currentProduct))
+              }}>카트추가</Button>
             </div>
           </div>
         </div>
@@ -59,16 +70,11 @@ function TabContent(props){
       props.setFade('')
     }
   }, [props.tabIndex])
-
   return (
     <>
       <div className={`start ${props.fade}`}>
         {
-          [
-            <div>{props.shoes[props.tabIndex].title}</div>
-            ,<div>{props.shoes[props.tabIndex].title}</div>
-            ,<div>{props.shoes[props.tabIndex].title}</div>
-          ][props.tabIndex]
+          props.shoes.map((item, i)=>{return <div>{props.shoes[props.tabIndex].title}</div>})[props.tabIndex]
         }
       </div>
     </>
