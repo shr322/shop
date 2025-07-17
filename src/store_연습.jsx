@@ -49,8 +49,6 @@ let cart = createSlice({
   }
 })
 
-export let { changeName, increaseAge } = user.actions
-
 export let { addCount, addItem, removeItem } = cart.actions
 
 export default configureStore({
