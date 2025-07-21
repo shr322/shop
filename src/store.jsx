@@ -17,7 +17,7 @@ let cart = createSlice({
       result.count++;
     },
     addItem(state, action) {
-      state.push({ id: action.payload.id, name: action.payload.title, count: 0 });
+      state.push({ id: action.payload.id, name: action.payload.title, count: 1 });
       alert('추가되었습니다.')
     },
   },

@@ -26,6 +26,18 @@ function App() {
 
   const [loading, setLoading] = useState(false)
 
+
+  useEffect(()=>{
+    // if(localStorage.getItem('task')){
+    //   localStorage.setItem('task',JSON.stringify(JSON.parse()));
+    // } else {
+    //   localStorage.setItem('task',JSON.stringify([]));
+    // }
+
+    localStorage.setItem('task',JSON.stringify([]));
+    
+  }, [])
+
   return (
     <>
       <div className="App">

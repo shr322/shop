@@ -26,7 +26,7 @@ let cart = createSlice({
       })
       
       function itemPush(){
-        state.push({id: action.payload.id, name: action.payload.title, count: 0});
+        state.push({id: action.payload.id, name: action.payload.title, count: 1});
         alert('카트에 추가됨');
       }
 

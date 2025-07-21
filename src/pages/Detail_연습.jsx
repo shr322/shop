@@ -19,6 +19,14 @@ function Detail(props){
 
   let dispatch = useDispatch();
 
+  useEffect(()=>{
+    const copy = localStorage.getItem('task');
+    const arr = JSON.parse(copy);
+    arr.push(currentProduct.id)
+
+    localStorage.setItem('task',JSON.stringify([...new Set(arr)]))
+  }, [])
+
   return (
     <>
       <div className="card mb-3">
@@ -43,7 +51,7 @@ function Detail(props){
       <Nav variant="tabs"  defaultActiveKey="link0">
         {props.shoes.map((item,i)=>{
           return (
-            <Nav.Item>
+            <Nav.Item key={i}>
               <Nav.Link eventKey={`link${i}`} onClick={()=>{
                 setTabIndex(i);
               }}>버튼{i}</Nav.Link>
