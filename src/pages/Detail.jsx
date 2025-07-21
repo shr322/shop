@@ -80,11 +80,18 @@ function Detail(props){
   useEffect(()=>{
     setFade('open')
   }, [])
+
+  useEffect(()=>{
+    let a = JSON.parse(localStorage.getItem('watched'));
+    a.unshift(찾는상품.id)
+    localStorage.setItem('watched', JSON.stringify([...new Set(a)]))
+  }, [])
   
   return (
     <div className={`container detail ${fade}`}>
       {count}<button onClick={()=>{
         setCount(count+1);
+        
       }}>버튼</button>
 
       { alertState ? <div className="alert alert-warning">2초이내 구매시 할인</div> : null}

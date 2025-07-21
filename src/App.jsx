@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -23,6 +23,15 @@ function App() {
   const [count, setCount] = useState(0);
   const [shoes, setShoes] = useState(data);
   const [loading, setLoading] = useState(false);
+
+  useEffect(()=>{
+    if(localStorage.getItem('watched')){
+      localStorage.setItem('watched', JSON.stringify(JSON.parse(localStorage.getItem('watched'))))
+    } else {
+      localStorage.setItem('watched', JSON.stringify([]))
+    }
+  }, [])
+
   return (
     <>
       <div className="App">
@@ -45,7 +54,11 @@ function App() {
             <>
               {loading === true ? <div className="loading">로딩중</div> : null}
               
-              <div className="main-bg"></div>
+              <div className="main-bg">
+                {JSON.parse(localStorage.getItem('watched'))[0]}
+                <img src={`https://codingapple1.github.io/shop/shoes${JSON.parse(localStorage.getItem('watched'))[0] + 1}.jpg`} width="10%" />
+                <img src={`https://codingapple1.github.io/shop/shoes${JSON.parse(localStorage.getItem('watched'))[1] + 1}.jpg`} width="10%" />
+              </div>
               {count}
               <div className="container">
                 <div className="row">

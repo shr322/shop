@@ -50,6 +50,7 @@ let cart = createSlice({
 })
 
 export let { addCount, addItem, removeItem } = cart.actions
+export let { changeName, increaseAge } = user.actions
 
 export default configureStore({
   reducer: { 
