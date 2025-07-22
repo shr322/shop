@@ -33,7 +33,7 @@ function App() {
     } else {
       localStorage.setItem('task',JSON.stringify([]));
     }
-    }, [])
+  }, [])
 
   return (
     <>

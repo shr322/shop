@@ -24,13 +24,17 @@ function App() {
   const [shoes, setShoes] = useState(data);
   const [loading, setLoading] = useState(false);
 
-  useEffect(()=>{
-    if(localStorage.getItem('watched')){
-      localStorage.setItem('watched', JSON.stringify(JSON.parse(localStorage.getItem('watched'))))
+  const [watchedArr, setWatchedArr] = useState([]);
+
+  useEffect(() => {
+    const watched = !!JSON.parse(localStorage.getItem('watched'))
+    if (watched) {
+      setWatchedArr(JSON.parse(watched));
     } else {
-      localStorage.setItem('watched', JSON.stringify([]))
+      localStorage.setItem('watched', JSON.stringify([]));
+      setWatchedArr([]);
     }
-  }, [])
+  }, []);
 
   return (
     <>
@@ -55,9 +59,8 @@ function App() {
               {loading === true ? <div className="loading">로딩중</div> : null}
               
               <div className="main-bg">
-                {JSON.parse(localStorage.getItem('watched'))[0]}
-                <img src={`https://codingapple1.github.io/shop/shoes${JSON.parse(localStorage.getItem('watched'))[0] + 1}.jpg`} width="10%" />
-                <img src={`https://codingapple1.github.io/shop/shoes${JSON.parse(localStorage.getItem('watched'))[1] + 1}.jpg`} width="10%" />
+                {!!JSON.parse(localStorage.getItem('watched')) ? JSON.parse(localStorage.getItem('watched'))[0] : null}
+                
               </div>
               {count}
               <div className="container">
