@@ -22,7 +22,7 @@ function Detail(props){
   useEffect(()=>{
     const copy = localStorage.getItem('task');
     const arr = JSON.parse(copy);
-    arr.push(currentProduct.id)
+    arr.unshift(currentProduct.id)
 
     localStorage.setItem('task',JSON.stringify([...new Set(arr)]))
   }, [])

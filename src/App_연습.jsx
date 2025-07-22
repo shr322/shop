@@ -28,15 +28,12 @@ function App() {
 
 
   useEffect(()=>{
-    // if(localStorage.getItem('task')){
-    //   localStorage.setItem('task',JSON.stringify(JSON.parse()));
-    // } else {
-    //   localStorage.setItem('task',JSON.stringify([]));
-    // }
-
-    localStorage.setItem('task',JSON.stringify([]));
-    
-  }, [])
+    if(!!JSON.parse(localStorage.getItem('task'))){
+      localStorage.setItem('task',JSON.stringify(JSON.parse(localStorage.getItem('task'))));
+    } else {
+      localStorage.setItem('task',JSON.stringify([]));
+    }
+    }, [])
 
   return (
     <>
@@ -56,7 +53,7 @@ function App() {
 
 
       <Routes>
-        <Route path="/" element={<Main/>}></Route>
+        <Route path="/" element={<Main shoes={shoes}/>}></Route>
         <Route path="/detail" element={<DetailList setLoading={setLoading} loading={loading} count={count} setCount={setCount} navigate={navigate} setShoes={setShoes} shoes={shoes} />}></Route>
         <Route path="/detail/:paramId" element={<Detail shoes={shoes}/>}></Route>
         <Route path="/about"  element={<About/>}></Route>

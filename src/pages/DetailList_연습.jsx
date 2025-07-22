@@ -55,7 +55,7 @@ function DetailList(props) {
         <Row>
           {props.shoes.map((item, i) => {
             return (
-              <Col xs={6} md={4}>
+              <Col xs={6} md={4} key={i}>
                 <Card>
                   <Card.Img variant="top" src={`https://codingapple1.github.io/shop/shoes${item.id + 1}.jpg`}/>
                   <Card.Body>
