@@ -84,7 +84,6 @@ function Detail(props){
   useEffect(()=>{
     let a = JSON.parse(localStorage.getItem('watched'));
     a.unshift(찾는상품.id)
-    console.log(a)
     localStorage.setItem('watched', JSON.stringify([...new Set(a)]))
   }, [])
   

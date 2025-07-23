@@ -13,7 +13,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")).render(
-  // <StrictMode>
+  <StrictMode>
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
         <BrowserRouter>
@@ -21,5 +21,5 @@ createRoot(document.getElementById("root")).render(
         </BrowserRouter>
       </Provider>
     </QueryClientProvider>
-  // </StrictMode>
+  </StrictMode>
 );

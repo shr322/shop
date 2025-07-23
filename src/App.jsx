@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { lazy, Suspense, useEffect, useState } from 'react';
+import { useQuery } from "react-query";
+import reactLogo from './assets/react.svg';
+import viteLogo from '/vite.svg';
+import './App.css';
 
 /* 추가 */
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -12,12 +13,15 @@ import styleBg from './bg.png';
 import data from './data';
 import {a,b} from './import_export_test';
 /* import export할때 여러개 불러오는 경우에는 변수명을 js파일과 동일하게 해야한다. */
-import axios from 'axios'
+import axios from 'axios';
 
 /* 컴포넌트 */
-import Detail from './pages/Detail';
-import Cart from './pages/Cart'
-import { useQuery } from "react-query";
+// import Detail from './pages/Detail';
+// import Cart from './pages/Cart';
+
+// 리액트 코드 완료 후 build할때 js가 하나에 모여서 엄청큰데 파일을 쪼게서 만들어지게 하는 lazy
+const Detail = lazy(()=> import('./pages/Detail'))
+const Cart = lazy(()=> import('./pages/Cart'))
 
 function App() {
   const navigate = useNavigate();
@@ -27,6 +31,7 @@ function App() {
 
   const [watchedArr, setWatchedArr] = useState([]);
 
+  // 실시간 데이터를 보여줘야 하는 사이트에 유용한 react-query
   let result = useQuery('작명', ()=>{
     return axios.get('https://codingapple1.github.io/userdata.json').then((a)=>{
       console.log('요청')
@@ -65,126 +70,127 @@ function App() {
           </Container>
         </Navbar>
         
-
-        <Routes>
-          <Route path="/" element={
-            <>
-              {loading === true ? <div className="loading">로딩중</div> : null}
-              
-              <div className="main-bg">
-                {!!JSON.parse(localStorage.getItem('watched')) ? JSON.parse(localStorage.getItem('watched'))[0] : null}
-                <img width={80} src={`https://codingapple1.github.io/shop/shoes${JSON.parse(localStorage.getItem('watched'))[0] + 1}.jpg`} alt="" />
+        <Suspense fallback={<div>로딩중임</div>}>
+          <Routes>
+            <Route path="/" element={
+              <>
+                {loading === true ? <div className="loading">로딩중</div> : null}
                 
-              </div>
-              {count}
-              <div className="container">
-                <div className="row">
-                  {shoes.map((item,i)=>{
-                    return (
-                      <Card key={i} shoes={shoes[i]} i={i} navigate={navigate}></Card>
-                    )
-                  })}
+                <div className="main-bg">
+                  {!!JSON.parse(localStorage.getItem('watched')) ? JSON.parse(localStorage.getItem('watched'))[0] : null}
+                  <img width={80} src={`https://codingapple1.github.io/shop/shoes${JSON.parse(localStorage.getItem('watched'))[0] + 1}.jpg`} alt="" />
+                  
                 </div>
-              </div>
+                {count}
+                <div className="container">
+                  <div className="row">
+                    {shoes.map((item,i)=>{
+                      return (
+                        <Card key={i} shoes={shoes[i]} i={i} navigate={navigate}></Card>
+                      )
+                    })}
+                  </div>
+                </div>
 
-              <button onClick={()=>{
-                const copy = JSON.parse(JSON.stringify(shoes)).sort((a,b)=>{
-                  if(a.title > b.title) return 1;
-                  if(a.title < b.title) return -1;
-                })
-                setShoes(copy)
-              }}>정 렬</button>
-              <button onClick={()=>{
+                <button onClick={()=>{
+                  const copy = JSON.parse(JSON.stringify(shoes)).sort((a,b)=>{
+                    if(a.title > b.title) return 1;
+                    if(a.title < b.title) return -1;
+                  })
+                  setShoes(copy)
+                }}>정 렬</button>
+                <button onClick={()=>{
 
-                /* 리팩토링된 버전*/
-                async function fetchData(url){
-                  try {
-                    setLoading(true)
-                    const result = await axios.get(url)
-                    setShoes((prev)=>{ return [...prev, ...result.data]});
-                    setCount((prev)=>{ return prev + 1})
-                    setLoading(false)
-                  } catch(err){
-                    console.log(err);
+                  /* 리팩토링된 버전*/
+                  async function fetchData(url){
+                    try {
+                      setLoading(true)
+                      const result = await axios.get(url)
+                      setShoes((prev)=>{ return [...prev, ...result.data]});
+                      setCount((prev)=>{ return prev + 1})
+                      setLoading(false)
+                    } catch(err){
+                      console.log(err);
+                    }
                   }
-                }
 
-                if(count === 0 ){
-                  // 리팩토링 아닌 버전
-                  // setLoading(true)
-                  // axios.get('https://codingapple1.github.io/shop/data2.json')
-                  // .then((result)=>{
-                  //   const copy = JSON.parse(JSON.stringify(shoes));
-                  //   copy.push(...result.data)
-                    
-                  //   /* 배열 + 배열할때 사용하는 방법 */
-                  //   // const copy = [...shoes, ...result.data]
-                  //   // const copy = JSON.parse(JSON.stringify(shoes)).concat(result.data);
+                  if(count === 0 ){
+                    // 리팩토링 아닌 버전
+                    // setLoading(true)
+                    // axios.get('https://codingapple1.github.io/shop/data2.json')
+                    // .then((result)=>{
+                    //   const copy = JSON.parse(JSON.stringify(shoes));
+                    //   copy.push(...result.data)
+                      
+                    //   /* 배열 + 배열할때 사용하는 방법 */
+                    //   // const copy = [...shoes, ...result.data]
+                    //   // const copy = JSON.parse(JSON.stringify(shoes)).concat(result.data);
 
-                  //   setShoes(copy)
-                  //   setCount(count+1)
-                  //   setLoading(false)
-                  // })
-                  // .catch((err)=>{
-                  //   console.log(err)
-                  //   setCount(count+1)
-                  //   setLoading(false)
-                  // })
+                    //   setShoes(copy)
+                    //   setCount(count+1)
+                    //   setLoading(false)
+                    // })
+                    // .catch((err)=>{
+                    //   console.log(err)
+                    //   setCount(count+1)
+                    //   setLoading(false)
+                    // })
 
-                  // 리팩토링 버전
-                  fetchData('https://codingapple1.github.io/shop/data2.json');
-                } else if(count === 1) {
-                  // 리팩토링 아닌 버전
-                  // setLoading(true)
-                  // axios.get('https://codingapple1.github.io/shop/data3.json')
-                  // .then((result)=>{
-                  //   const copy = JSON.parse(JSON.stringify(shoes));
-                  //   copy.push(...result.data)
-                    
-                  //   setShoes(copy)
-                  //   setCount(count+1)
-                  //   setLoading(false)
-                  // })
-                  // .catch((err)=>{
-                  //   console.log(err)
-                  //   setCount(count+1)
-                  //   setLoading(false)
-                  // })
+                    // 리팩토링 버전
+                    fetchData('https://codingapple1.github.io/shop/data2.json');
+                  } else if(count === 1) {
+                    // 리팩토링 아닌 버전
+                    // setLoading(true)
+                    // axios.get('https://codingapple1.github.io/shop/data3.json')
+                    // .then((result)=>{
+                    //   const copy = JSON.parse(JSON.stringify(shoes));
+                    //   copy.push(...result.data)
+                      
+                    //   setShoes(copy)
+                    //   setCount(count+1)
+                    //   setLoading(false)
+                    // })
+                    // .catch((err)=>{
+                    //   console.log(err)
+                    //   setCount(count+1)
+                    //   setLoading(false)
+                    // })
 
-                  // 리팩토링 버전
-                  fetchData('https://codingapple1.github.io/shop/data3.json');
-                } else {
-                  setLoading(false);
-                  alert('상품이 없어요');
-                }
+                    // 리팩토링 버전
+                    fetchData('https://codingapple1.github.io/shop/data3.json');
+                  } else {
+                    setLoading(false);
+                    alert('상품이 없어요');
+                  }
 
 
-                /* 서버로 데이터 전송하는 법 */
-                // axios.post('데이터 받는 주소', {name: 'sim'});
+                  /* 서버로 데이터 전송하는 법 */
+                  // axios.post('데이터 받는 주소', {name: 'sim'});
 
-                /* 동시에 여러개 요청하는 법*/
-                // Promise.all([ axios.get('경로1'), axios.get('경로2') ]).then(()=>{})
+                  /* 동시에 여러개 요청하는 법*/
+                  // Promise.all([ axios.get('경로1'), axios.get('경로2') ]).then(()=>{})
 
-                /* fetch 사용법 */ 
-                // fetch('경로').then((response)=>{return response.json()}).then((data)=>{return data})
-              }}>더 보 기</button>
-            </>
-          }/>
+                  /* fetch 사용법 */ 
+                  // fetch('경로').then((response)=>{return response.json()}).then((data)=>{return data})
+                }}>더 보 기</button>
+              </>
+            }/>
 
-          <Route path="/detail/:id" element={<Detail shoes={shoes}/>}/>
+              <Route path="/detail/:id" element={<Detail shoes={shoes}/>}/>
 
-          <Route path="/about" element={<About navigate={navigate}/>}>
-            <Route path="member" element={<div>멤버</div>}></Route>
-            <Route path="location" element={<div>로케이션</div>}></Route>
-          </Route>
+            <Route path="/about" element={<About navigate={navigate}/>}>
+              <Route path="member" element={<div>멤버</div>}></Route>
+              <Route path="location" element={<div>로케이션</div>}></Route>
+            </Route>
 
-          <Route path="/event" element={<EventPage navigate={navigate}/>}>
-            <Route path="one" element={<div>첫 주문시 양배추즙 서비스</div>}></Route>
-            <Route path="two" element={<div>생일기념 쿠폰받기</div>}></Route>
-          </Route>
+            <Route path="/event" element={<EventPage navigate={navigate}/>}>
+              <Route path="one" element={<div>첫 주문시 양배추즙 서비스</div>}></Route>
+              <Route path="two" element={<div>생일기념 쿠폰받기</div>}></Route>
+            </Route>
 
-          <Route path="/cart" element={<Cart/>}></Route>
-        </Routes>
+            <Route path="/cart" element={<Cart/>}></Route>
+          </Routes>
+        </Suspense>
 
 
       </div>
