@@ -17,6 +17,7 @@ import axios from 'axios'
 /* 컴포넌트 */
 import Detail from './pages/Detail';
 import Cart from './pages/Cart'
+import { useQuery } from "react-query";
 
 function App() {
   const navigate = useNavigate();
@@ -25,6 +26,14 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   const [watchedArr, setWatchedArr] = useState([]);
+
+  let result = useQuery('작명', ()=>{
+    return axios.get('https://codingapple1.github.io/userdata.json').then((a)=>{
+      console.log('요청')
+      return a.data
+    })
+  })
+
 
   useEffect(() => {
     const watched = !!JSON.parse(localStorage.getItem('watched'))
@@ -39,7 +48,7 @@ function App() {
   return (
     <>
       <div className="App">
-        <Navbar bg="dark" variant="dark">
+        <Navbar bg="white" variant="white">
           <Container>
             <Navbar.Brand href="#home">ShoeShop</Navbar.Brand>
             <Nav className="me-auto">
@@ -49,6 +58,10 @@ function App() {
               <Nav.Link onClick={()=>{navigate('/event')}}>이벤트</Nav.Link>
               <Nav.Link onClick={()=>{navigate('/cart')}}>카트</Nav.Link>
             </Nav>
+
+            <Navbar className="ms-auto">
+              {result.isLoading ? '로딩중' : result.data.name}
+            </Navbar>
           </Container>
         </Navbar>
         
@@ -60,6 +73,7 @@ function App() {
               
               <div className="main-bg">
                 {!!JSON.parse(localStorage.getItem('watched')) ? JSON.parse(localStorage.getItem('watched'))[0] : null}
+                <img width={80} src={`https://codingapple1.github.io/shop/shoes${JSON.parse(localStorage.getItem('watched'))[0] + 1}.jpg`} alt="" />
                 
               </div>
               {count}
