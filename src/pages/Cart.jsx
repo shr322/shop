@@ -9,12 +9,10 @@ import { memo, useMemo, useState } from "react";
 //   console.log('재렌더링됨');
 //   return <div>자식임</div>
 // }
-
 let Child = memo(function(){
   console.log('재렌더링됨');
   return <div>자식임</div>
 })
-
 
 // useMemo 예시
 // function 함수(){
