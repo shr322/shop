@@ -4,6 +4,9 @@ import { Nav } from 'react-bootstrap';
 import user from "../store/userSlice";
 import { useDispatch } from "react-redux";
 import { addItem } from "../store";
+import { useLike } from '../hook/useLike'
+
+import axios from "axios";
 
 /* Lifecycle hook 예전 방식 */
 // class Detail2 extends React.Component {
@@ -29,6 +32,9 @@ import { addItem } from "../store";
 */
 
 function Detail(props){
+
+  let [like, setLike] = useLike();
+
 
   let [count, setCount] = useState(0);
   const {id} = useParams();
@@ -89,9 +95,8 @@ function Detail(props){
   
   return (
     <div className={`container detail ${fade}`}>
-      {count}<button onClick={()=>{
-        setCount(count+1);
-        
+      {like}<button onClick={()=>{
+        setLike(like+1);
       }}>버튼</button>
 
       { alertState ? <div className="alert alert-warning">2초이내 구매시 할인</div> : null}

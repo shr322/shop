@@ -14,6 +14,7 @@ import data from './data';
 import {a,b} from './import_export_test';
 /* import export할때 여러개 불러오는 경우에는 변수명을 js파일과 동일하게 해야한다. */
 import axios from 'axios';
+import { useName } from "./hook/useName";
 
 /* 컴포넌트 */
 // import Detail from './pages/Detail';
@@ -30,6 +31,8 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   const [watchedArr, setWatchedArr] = useState([]);
+
+  const [name, setName] = useName();
 
   // 실시간 데이터를 보여줘야 하는 사이트에 유용한 react-query
   let result = useQuery('작명', ()=>{
@@ -65,7 +68,8 @@ function App() {
             </Nav>
 
             <Navbar className="ms-auto">
-              {result.isLoading ? '로딩중' : result.data.name}
+              {/* {result.isLoading ? '로딩중' : result.data.name} */}
+              {result.isLoading ? '로딩중' : name}
             </Navbar>
           </Container>
         </Navbar>
